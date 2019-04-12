@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2018 Zjtech. All rights reserved.
+  ~ This material is the confidential property of Zjtech or its
+  ~ licensors and may be used, reproduced, stored or transmitted only in
+  ~ accordance with a valid MIT license or sublicense agreement.
+  -->
+
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:task="http://www.springframework.org/schema/task"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.springframework.org/schema/batch"
+  xsi:schemaLocation="http://www.springframework.org/schema/batch
+    http://www.springframework.org/schema/batch/spring-batch.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task.xsd
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <job id="multipleThreadJob">
+    <step id="mtStep" next="mtFinalStep">
+      <tasklet task-executor="taskExecutor">
+        <!--
+        Multithreaded Step
+        The idea of using multiple threads for one Step is applicable only to Chunk-oriented processing.
+        Each chunk is processed in a separate thread. The threads are handled by a thread pool configured for Step.
+        -->
+        <!-- every 4 items processed in on batch job-->
+        <chunk commit-interval="2" processor="dataProcessor" reader="mtDataReader"
+          writer="dataWriter">
+        </chunk>
+      </tasklet>
+    </step>
+    <step id="mtFinalStep">
+      <tasklet ref="finalTasklet"></tasklet>
+    </step>
+  </job>
+  <task:executor id="taskExecutor" pool-size="10"/>
+</beans:beans>

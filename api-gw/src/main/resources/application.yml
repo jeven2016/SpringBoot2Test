@@ -1,0 +1,67 @@
+server:
+  port: ${server_port:9000}
+
+# Enable Spring Boot Actuator: Production-ready features to monitor and manage this application
+# when it’s pushed to production using HTTP endpoints, in addition the JMX endpoints is disabled.
+management:
+  server:
+#    port: 8090  # enable http endpoints for spring actuator
+    ssl:
+      enabled: false
+#    servlet:
+#      context-path: /mgnt
+  health:
+    defaults:
+      enabled: true
+  endpoint:
+    shutdown:
+      enabled: false
+    health:
+      enabled: true
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+    jmx:
+      exposure:
+        exclude: "*"
+  metrics:
+    export:
+      jmx:
+        enabled: false #Disabling JMX endpoints
+
+# register this service on eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://10.113.49.228:5801/eureka, http://10.113.49.228:5802/eureka
+
+
+spring:
+  cloud:
+    gateway:
+      enabled: true
+
+      # enable discovery client
+      discovery:
+        locator:
+          enabled: true
+
+      default-filters:
+      - AddResponseHeader=X-Response-Default-Foo, Default-Bar # add a response header
+      routes:
+      # =====================================
+
+      # forward the request of http://xxxx/api/person to downstream service webflux, http://**/person/**
+      - id: service_to_user
+        uri: lb://webflux
+        order: 8000
+        predicates:
+        - Path=/api/person/**
+        filters:
+        - StripPrefix=1  # strip prefix of path
+
+

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="FILE">
+    <file>/var/log/bc/bc.log</file> <!--this file should be modified together with logback.xml -->
+    <append>true</append>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>/var/log/bc/bc-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+      <maxFileSize>90MB</maxFileSize>
+      <maxHistory>50</maxHistory>
+      <!--<totalSizeCap>5GB</totalSizeCap>-->
+    </rollingPolicy>
+    <encoder>
+      <pattern>%date %-5level [%thread] %logger{36} [%file:%line] %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender class="ch.qos.logback.core.ConsoleAppender" name="STDOUT">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>%date %-5level [%thread] %logger{36} [%file:%line] %msg%n</pattern>
+    </layout>
+  </appender>
+
+  <!-- Note: please change the log level in applications.properties file -->
+  <root level="INFO">
+    <appender-ref ref="FILE"/>
+    <appender-ref ref="STDOUT"/>
+  </root>
+</configuration>

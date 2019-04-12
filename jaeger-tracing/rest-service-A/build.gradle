@@ -1,0 +1,23 @@
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'org.springframework.boot'
+
+archivesBaseName = 'rest-serviceA'
+
+//this is a spring cloud project
+dependencyManagement {
+  imports {
+    mavenBom libs.'spring-cloud-dependencies'
+  }
+}
+
+
+dependencies {
+  compile group: 'io.opentracing.contrib', name: 'opentracing-spring-jaeger-web-starter', version: '1.0.0'
+
+  compile 'io.jaegertracing:jaeger-core:0.32.0'
+  compile libs.'spring-boot-starter-web'
+
+  compile libs.'spring-boot-starter-actuator'
+
+  compile libs.'lombok'
+}

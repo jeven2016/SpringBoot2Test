@@ -1,0 +1,35 @@
+spring:
+  h2:
+    console:
+      path: /h2
+  jpa:
+    hibernate:
+      ddl-auto: create-drop  # Initialize the database and discard the data when this application is exited
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
+  datasource:
+#      url: "jdbc:h2:file:~/h2/web_db;DB_CLOSE_ON_EXIT=FALSE"
+      url: "jdbc:h2:mem:web;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE"
+      username: root
+      password: NextGen
+      driver-class-name:  org.h2.Driver
+      platform: h2
+
+server:
+  port: ${server_port:9002}
+
+#  server.servlet.context-path only works with below dependency.
+#  this doesn't apply for webflux
+#  https://github.com/spring-projects/spring-boot/issues/10129
+#  servlet:
+#    path: /webFlux
+
+# register this service on eureka
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://10.113.49.228:5801/eureka

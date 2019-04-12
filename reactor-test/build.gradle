@@ -1,0 +1,65 @@
+plugins {
+    id 'com.google.cloud.tools.jib' version '0.9.6'
+}
+
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'org.springframework.boot'
+
+
+
+configurations {
+//  compile.exclude module: 'spring-boot-starter-tomcat'
+//  compile.exclude module: 'tomcat-embed-el'
+}
+
+dependencies {
+    compile libs.lombok
+//  compile('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
+//  compile('org.springframework.boot:spring-boot-starter-data-redis-reactive')
+    compile('org.springframework.boot:spring-boot-starter-webflux')
+//  compile('org.springframework.cloud:spring-cloud-stream-reactive')
+    compile('org.springframework.boot:spring-boot-starter-test')
+    compile('io.projectreactor:reactor-test')
+
+
+    //resource server
+    compile 'org.springframework.boot:spring-boot-starter-security'
+
+//  testCompile('org.springframework.cloud:spring-cloud-stream-test-support')
+}
+
+archivesBaseName = 'reactor-test'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': project(":").name,
+            'Implementation-Version': projectInfo.version
+    }
+}
+
+
+jib {
+    from {
+        image = 'openjdk:alpine'
+        /* auth {
+           username = USERNAME // Defined in 'gradle.properties'.
+           password = PASSWORD
+         }*/
+    }
+    to {
+//    image = 'localhost:5000/my-image/built-with-jib'
+        image = "jujucom/webflux"
+        credHelper = 'osxkeychain'
+        /* auth {
+             username = USERNAME // Defined in 'gradle.properties'.
+             password = PASSWORD
+           }*/
+    }
+    container {
+        jvmFlags = ['-Xms512m', '-Xdebug', '-Xmy:flag=jib-rules']
+        mainClass = 'zjtech.webflux.WebFluxApp'
+        args = ['some', 'args']
+        ports = ['9002','1000', '2000-2003/udp']
+        format = 'OCI'
+    }
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2018 Zjtech. All rights reserved.
+  ~ This material is the confidential property of Zjtech or its
+  ~ licensors and may be used, reproduced, stored or transmitted only in
+  ~ accordance with a valid MIT license or sublicense agreement.
+  -->
+
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.springframework.org/schema/batch"
+  xsi:schemaLocation="http://www.springframework.org/schema/batch
+    http://www.springframework.org/schema/batch/spring-batch.xsd
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <step abstract="true" id="abstractStep">
+    <tasklet ref="scopeATasklet"/>
+  </step>
+  <job abstract="true" id="abstractJob">
+    <listeners>
+      <listener ref="job2Listener"/>
+    </listeners>
+  </job>
+
+  <job id="extendScopesJob" parent="abstractJob">
+    <step id="mystep1" parent="abstractStep"/>
+  </job>
+</beans:beans>

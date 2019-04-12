@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: kafka-consumer
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: message
+          contentType: application/json
+          group: m1
+      kafka:
+        binder:
+          autoCreateTopics: true
+          requiredAcks: 1
+          brokers: 10.113.49.228:5805
+        bindings:
+          output:
+            consumer:
+              startOffset: latest
+              autoCommitOnError: true
+
+server:
+  port: 9003
+
+
+opentracing:
+  jaeger:
+#    udp-sender:
+#      host: localhost
+#      port: 6831
+    http-sender:
+      #url: http://10.113.49.230:5805/api/traces
+      url: http://localhost:14268/api/traces
+    probabilistic-sampler:
+      sampling-rate: 1.0  #Probabilistic sampler
+    enabled: true

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2018 Zjtech. All rights reserved.
+  ~ This material is the confidential property of Zjtech or its
+  ~ licensors and may be used, reproduced, stored or transmitted only in
+  ~ accordance with a valid MIT license or sublicense agreement.
+  -->
+
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.springframework.org/schema/batch"
+  xsi:schemaLocation="http://www.springframework.org/schema/batch
+    http://www.springframework.org/schema/batch/spring-batch.xsd
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <job id="simpleRecordsJob">
+    <step id="simpleRecordsStep" next="finalStep">
+      <!-- Sometimes we need to perform a single action as part of a bigger flow.
+      For example, we might need to send a notification at the end of a job or perform a single
+       stored procedure call. SB provides the Tasklet interface. It has only one method, execute,
+       where we can place our custom logic. This instance can then be wrapped into the TaskletStep
+       class and used as a Step in the SB flow.
+      -->
+      <tasklet>
+        <!-- every 4 items processed in on batch job-->
+        <chunk commit-interval="4" processor="dataProcessor" reader="dataReader"
+          writer="dataWriter">
+          <streams>
+            <stream ref="myItemStreamProcessor"/>
+          </streams>
+        </chunk>
+      </tasklet>
+    </step>
+    <step id="finalStep">
+      <tasklet ref="finalTasklet"></tasklet>
+    </step>
+  </job>
+</beans:beans>

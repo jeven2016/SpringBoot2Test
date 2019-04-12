@@ -1,0 +1,17 @@
+---
+version: '2'
+services:
+  api-gw:
+    image: zjtech/api-gw
+    environment:
+      - server_port=9001
+      - hostname=eureka-registry-1
+      - instance_id=eureka-registry-1
+      - defaultZone=http://eureka-registry-2:9002/eureka,http://eureka-registry-1:9001/eureka
+    ports:
+      - 5801:9000
+    networks:
+      - network-eureka
+
+networks:
+  network-eureka:

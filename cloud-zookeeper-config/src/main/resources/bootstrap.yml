@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: cloud-zk-config
+  cloud:
+    zookeeper:
+      connect-string: 10.113.49.228:5806
+      discovery:
+        enabled: true
+        root:  "/houyi/${PRODUCT:product}/${ENV:deployment}"
+        instanceId:  "hosts/${INSTANCEID:instance1}"
+      config:
+        enabled: true
+

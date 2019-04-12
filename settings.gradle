@@ -1,0 +1,16 @@
+rootProject.name = 'SpringBoot2Test'
+include 'webflux'
+include 'eureka-registry'
+include 'api-gw'
+include 'auth'
+include 'batch-capture'
+include 'piczz-dl'
+
+include 'jaeger-tracing'
+include 'jaeger-tracing:rest-service-A'
+include 'jaeger-tracing:rest-service-B'
+include 'jaeger-tracing:kafka-consumer'
+include 'redis-cache'
+include 'reactor-test'
+include 'cloud-zookeeper-config'
+

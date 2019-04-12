@@ -1,0 +1,33 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    include: oauth2
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://10.113.49.228:5801/eureka, http://10.113.49.228:5802/eureka
+
+logout:
+  success:
+    url: http://localhost/logout
+
+jwt:
+  access:
+    token:
+      signing-key: 123
+      validity-seconds: 1005  # 5 seconds
+      refresh-validity-seconds: 1006  # 5 seconds
+
+
+management:
+  endpoint:
+    mappings:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: *
+        exclude: shutdown
+      base-path: /actuator

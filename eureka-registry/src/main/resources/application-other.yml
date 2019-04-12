@@ -1,0 +1,78 @@
+tpd:
+  peer1Port: 8761
+  peer2Port: 8762
+
+
+# Enable Spring Boot Actuator: Production-ready features to monitor and manage this application
+# when it’s pushed to production using HTTP endpoints, in addition the JMX endpoints is disabled.
+management:
+  server:
+#    port: 8090  # enable http endpoints for spring actuator
+    ssl:
+      enabled: false
+#    servlet:
+#      context-path: /mgnt
+  health:
+    defaults:
+      enabled: true
+  endpoint:
+    shutdown:
+      enabled: false
+    health:
+      enabled: true
+      show-details: always
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+    jmx:
+      exposure:
+        exclude: "*"
+  metrics:
+    export:
+      jmx:
+        enabled: false #Disabling JMX endpoints
+spring:
+  banner:
+    image:
+      location: tpd_banner.png
+      width: 76
+      height: 32
+      invert: true
+
+
+---
+spring:
+  profiles: peer1
+eureka:
+  instance:
+    # See blog post for details, modify /etc/hosts
+    hostname: eureka-peer1
+    # Either this one or the spring boot name must be the same
+    # (it works without setting it too, using the alias UNKNOWN)
+    appname: eureka-cluster
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-peer2:${tpd.peer2Port}/eureka
+    register-with-eureka: true
+    fetch-registry: true
+server:
+  port: ${tpd.peer1Port}
+
+---
+spring:
+  profiles: peer2
+eureka:
+  instance:
+    hostname: eureka-peer2
+    appname: eureka-cluster
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-peer1:${tpd.peer1Port}/eureka
+    register-with-eureka: true
+    fetch-registry: true
+server:
+  port: ${tpd.peer2Port}

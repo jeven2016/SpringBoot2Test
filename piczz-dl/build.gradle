@@ -1,0 +1,32 @@
+/*
+ * Copyright (c) 2018 Zjtech. All rights reserved.
+ * This material is the confidential property of Zjtech or its
+ * licensors and may be used, reproduced, stored or transmitted only in
+ * accordance with a valid MIT license or sublicense agreement.
+ */
+
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'org.springframework.boot'
+
+archivesBaseName = 'batch-capture'
+
+dependencies {
+  // https://mvnrepository.com/artifact/org.jsoup/jsoup
+  compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
+  compile 'com.netflix.archaius:archaius-core:0.6.0'
+
+
+  compile libs.lombok
+  compile "org.springframework.boot:spring-boot-starter-batch"
+  compile libs.'spring-boot-starter-web'
+  compile libs.'h2-database'
+  compile 'org.seleniumhq.selenium:selenium-java:3.5.3'
+  compile libs.'spring-boot-starter-web'
+  compile libs.'spring-boot-starter-data-jpa'
+  compile libs.'spring-boot-starter-cache'
+  compile libs.'spring-boot-starter-test'
+
+  runtime libs.'h2-database'
+  compile libs.'spring-boot-starter-aop'
+  compile libs.'lombok'
+}

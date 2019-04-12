@@ -1,0 +1,26 @@
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'org.springframework.boot'
+
+archivesBaseName = 'rest-service-B'
+
+//this is a spring cloud project
+dependencyManagement {
+  imports {
+    mavenBom libs.'spring-cloud-dependencies'
+  }
+}
+
+
+dependencies {
+  compile group: 'io.opentracing.contrib', name: 'opentracing-spring-jaeger-web-starter', version: '1.0.0'
+
+  compile 'io.jaegertracing:jaeger-core:0.32.0'
+  compile libs.'spring-boot-starter-web'
+
+  implementation('org.springframework.cloud:spring-cloud-stream')
+  implementation('org.springframework.cloud:spring-cloud-starter-stream-kafka')
+  testImplementation('org.springframework.boot:spring-boot-starter-test')
+  testImplementation('org.springframework.cloud:spring-cloud-stream-test-support')
+
+  compile libs.'lombok'
+}

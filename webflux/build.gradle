@@ -1,0 +1,81 @@
+plugins {
+  id 'com.google.cloud.tools.jib' version '0.9.6'
+}
+
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'org.springframework.boot'
+
+
+
+configurations {
+//  compile.exclude module: 'spring-boot-starter-tomcat'
+//  compile.exclude module: 'tomcat-embed-el'
+}
+
+//this is a spring cloud project
+dependencyManagement {
+  imports {
+    mavenBom libs.'spring-cloud-dependencies'
+    mavenBom 'org.springframework.cloud:spring-cloud-sleuth:2.0.0.M9'
+  }
+}
+
+dependencies {
+  compile libs.lombok
+
+  compile('org.springframework.boot:spring-boot-starter-data-jpa')
+  //only for dev
+  runtime libs.'h2-database'
+
+//  compile('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
+//  compile('org.springframework.boot:spring-boot-starter-data-redis-reactive')
+  compile('org.springframework.boot:spring-boot-starter-webflux')
+//  compile('org.springframework.cloud:spring-cloud-stream-reactive')
+  testCompile('org.springframework.boot:spring-boot-starter-test')
+  testCompile('io.projectreactor:reactor-test')
+  compile libs.'spring-boot-starter-actuator'
+
+  compile libs.'spring-cloud-starter-netflix-eureka-client'
+
+  //resource server
+  compile 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure'
+  compile 'org.springframework.boot:spring-boot-starter-security'
+
+//  testCompile('org.springframework.cloud:spring-cloud-stream-test-support')
+}
+
+archivesBaseName = 'webflux'
+
+jar {
+  manifest {
+    attributes 'Implementation-Title': project(":").name,
+        'Implementation-Version': projectInfo.version
+  }
+}
+
+
+jib {
+  from {
+    image = 'openjdk:alpine'
+    /* auth {
+       username = USERNAME // Defined in 'gradle.properties'.
+       password = PASSWORD
+     }*/
+  }
+  to {
+//    image = 'localhost:5000/my-image/built-with-jib'
+    image = "jujucom/webflux"
+    credHelper = 'osxkeychain'
+    /* auth {
+         username = USERNAME // Defined in 'gradle.properties'.
+         password = PASSWORD
+       }*/
+  }
+  container {
+    jvmFlags = ['-Xms512m', '-Xdebug', '-Xmy:flag=jib-rules']
+    mainClass = 'zjtech.webflux.WebFluxApp'
+    args = ['some', 'args']
+    ports = ['9002','1000', '2000-2003/udp']
+    format = 'OCI'
+  }
+}

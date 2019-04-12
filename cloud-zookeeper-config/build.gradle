@@ -1,0 +1,30 @@
+plugins {
+  id 'io.franzbecker.gradle-lombok' version '1.14'
+}
+lombok {
+  version = '1.18.4'
+}
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'org.springframework.boot'
+
+dependencyManagement {
+  imports {
+    mavenBom libs.'spring-cloud-dependencies'
+  }
+}
+
+dependencies {
+
+  compile('org.springframework.cloud:spring-cloud-starter-zookeeper-all') {
+    exclude group: 'org.apache.zookeeper', module: 'zookeeper'
+  }
+  compile('org.apache.zookeeper:zookeeper:3.4.12') {
+    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+  }
+  compile libs.'spring-cloud-starter-openfeign'
+  compile libs.'spring-boot-starter-actuator'
+  compile libs.'spring-boot-starter-webflux'
+}
+
+
+

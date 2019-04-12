@@ -1,0 +1,40 @@
+---
+version: '2'
+services:
+  eureka-registry-1:
+    image: zjtech/eureka-registry
+    environment:
+      - server_port=9001
+      - hostname=eureka-registry-1
+      - instance_id=eureka-registry-1
+      - defaultZone=http://eureka-registry-2:9002/eureka
+      - register_with_eureka=true
+      - fetch_registry=true
+    ports:
+      - 5801:9001
+    extra_hosts:
+      - "eureka-registry-1:127.0.0.1"
+    networks:
+      - network-eureka
+
+  eureka-registry-2:
+    image: zjtech/eureka-registry
+    environment:
+      - server_port=9002
+      - hostname=eureka-registry-2
+      - instance_id=eureka-registry-2
+      - defaultZone=http://eureka-registry-1:9001/eureka
+      - register_with_eureka=true
+      - fetch_registry=true
+    ports:
+      - 5802:9002
+    extra_hosts:
+      - "eureka-registry-2:127.0.0.1"
+    networks:
+      - network-eureka
+    depends_on:
+      - eureka-registry-1
+
+
+networks:
+  network-eureka:

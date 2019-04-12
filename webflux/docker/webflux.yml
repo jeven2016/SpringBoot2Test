@@ -1,0 +1,14 @@
+---
+version: '2'
+services:
+  webflux:
+    image: zjtech/webflux
+    environment:
+      - defaultZone=http://eureka-registry-2:9002/eureka,http://eureka-registry-1:9001/eureka
+    ports:
+      - 5801:9002
+    networks:
+      - network-eureka
+
+networks:
+  network-eureka:

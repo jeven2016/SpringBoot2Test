@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: rest-service-A
+
+server:
+  port: 9001
+
+
+opentracing:
+  jaeger:
+#    udp-sender:
+#      host: localhost
+#      port: 6831
+    http-sender:
+      #url: http://10.113.49.230:5805/api/traces
+      url: http://localhost:14268/api/traces
+    probabilistic-sampler:
+      sampling-rate: 1.0  #Probabilistic sampler
+    enabled: true

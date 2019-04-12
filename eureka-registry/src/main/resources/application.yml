@@ -1,0 +1,62 @@
+server:
+  port: ${server_port:9000}
+
+# Enable Spring Boot Actuator: Production-ready features to monitor and manage this application
+# when it’s pushed to production using HTTP endpoints, in addition the JMX endpoints is disabled.
+management:
+  server:
+#    port: 8090  # enable http endpoints for spring actuator
+    ssl:
+      enabled: false
+#    servlet:
+#      context-path: /mgnt
+  health:
+    defaults:
+      enabled: true
+  endpoint:
+    shutdown:
+      enabled: false
+    health:
+      enabled: true
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+    jmx:
+      exposure:
+        exclude: "*"
+  metrics:
+    export:
+      jmx:
+        enabled: false #Disabling JMX endpoints
+
+eureka:
+  instance:
+#    prefer-ip-address: true
+    instance-id: ${instance_id:'eureka-registry-inst'}
+
+    # https://github.com/Netflix/eureka/issues/1008
+    # this should be set as cluster name if more nodes are added
+    appname: eureka_cluster
+
+    hostname: ${hostname}
+  client:
+    register-with-eureka: ${register_with_eureka:true}
+    fetch-registry: ${fetch_registry:true}
+    service-url:
+      defaultZone: ${defaultZone}
+#  server:
+#    wait-time-in-ms-when-sync-empty: 0
+#    enable-self-preservation: false
+
+spring:
+  cloud:
+    inetutils:
+#      default-ip-address: ${default_ip_address}  # preferred network in docker container
+
+      #https://github.com/spring-cloud/spring-cloud-netflix/issues/1646
+      ignored-interfaces:
+        - lo

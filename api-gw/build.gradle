@@ -1,0 +1,16 @@
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'org.springframework.boot'
+
+dependencyManagement {
+  imports {
+    mavenBom libs.'spring-cloud-dependencies'
+  }
+}
+
+archivesBaseName = 'api-gw'
+
+dependencies {
+  compile libs.'spring-cloud-starter-gateway'
+  compile libs.'spring-boot-starter-actuator'
+  compile libs.'spring-cloud-starter-netflix-eureka-client'
+}

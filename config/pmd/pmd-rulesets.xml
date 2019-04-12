@@ -1,0 +1,150 @@
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://pmd.sf.net/ruleset/1.0.0"
+  xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
+  xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+  name="Pmd Rules">
+  <description>Base PMD rules file</description>
+  <rule ref="rulesets/java/unnecessary.xml">
+    <exclude name="UselessParentheses"/>
+  </rule>
+  <rule ref="rulesets/java/basic.xml">
+    <!--
+     Excluding this one since we add it with different priority below.
+    -->
+    <exclude name="CollapsibleIfStatements"/>
+  </rule>
+  <rule ref="rulesets/java/basic.xml/CollapsibleIfStatements">
+    <priority>5</priority>
+  </rule>
+  <!--  *********************  -->
+  <rule ref="rulesets/java/controversial.xml">
+    <exclude name="AvoidFinalLocalVariable"/>
+    <exclude name="DataflowAnomalyAnalysis"/>
+    <exclude name="UnnecessaryConstructor"/>
+    <exclude name="NullAssignment"/>
+    <exclude name="OnlyOneReturn"/>
+    <exclude name="UseConcurrentHashMap"/>
+    <exclude name="AvoidLiteralsInIfCondition"/>
+    <exclude name="CallSuperInConstructor"/>
+    <exclude name="AvoidUsingShortType"/>
+    <exclude name="DefaultPackage"/>
+    <exclude name="AtLeastOneConstructor"/>
+  </rule>
+  <!--  *********************  -->
+  <rule ref="rulesets/java/design.xml">
+    <exclude name="AvoidDeeplyNestedIfStmts"/>
+    <exclude name="UncommentedEmptyConstructor"/>
+    <exclude name="UncommentedEmptyMethodBody"/>
+    <exclude name="ConfusingTernary"/>
+    <exclude name="TooFewBranchesForASwitchStatement"/>
+    <exclude name="MissingBreakInSwitch"/>
+    <exclude name="EmptyMethodInAbstractClassShouldBeAbstract"/>
+    <exclude name="GodClass"/>
+    <exclude name="UseVarargs"/>
+  </rule>
+  <rule ref="rulesets/java/design.xml/AvoidDeeplyNestedIfStmts">
+    <properties>
+      <property name="problemDepth" value="4"/>
+    </properties>
+  </rule>
+  <!--  *********************  -->
+  <rule ref="rulesets/java/javabeans.xml">
+    <exclude name="BeanMembersShouldSerialize"/>
+  </rule>
+  <!--  *********************  -->
+  <rule ref="rulesets/java/logging-java.xml"/>
+  <!--  *********************  -->
+  <rule ref="rulesets/java/naming.xml">
+    <exclude name="LongVariable"/>
+    <exclude name="ShortVariable"/>
+    <exclude name="VariableNamingConventions"/>
+    <exclude name="ShortClassName"/>
+  </rule>
+  <!--  *********************  -->
+  <rule ref="rulesets/java/optimizations.xml">
+    <exclude name="AvoidInstantiatingObjectsInLoops"/>
+    <exclude name="MethodArgumentCouldBeFinal"/>
+    <!--
+     Excluding due to bug in 5.0.1 and 5.0.2 - should be re enabled asap!
+    -->
+    <exclude name="PrematureDeclaration"/>
+  </rule>
+  <!--  *********************  -->
+  <rule ref="rulesets/java/codesize.xml/NPathComplexity">
+    <properties>
+      <property name="minimum" value="2000"/>
+    </properties>
+  </rule>
+  <rule ref="rulesets/java/codesize.xml/CyclomaticComplexity">
+    <properties>
+      <property name="reportLevel" value="30"/>
+    </properties>
+  </rule>
+  <rule ref="rulesets/java/codesize.xml/ExcessivePublicCount"/>
+  <rule ref="rulesets/java/codesize.xml/TooManyFields">
+    <properties>
+      <property name="maxfields" value="25"/>
+    </properties>
+  </rule>
+  <!--  *********************  -->
+  <rule ref="rulesets/java/coupling.xml">
+    <exclude name="ExcessiveImports"/>
+    <exclude name="LawOfDemeter"/>
+    <exclude name="LoosePackageCoupling"/>
+  </rule>
+  <!--  *********************  -->
+  <rule ref="rulesets/java/j2ee.xml">
+    <exclude name="UseProperClassLoader"/>
+  </rule>
+  <!--  *********************  -->
+  <rule ref="rulesets/java/strictexception.xml">
+    <exclude name="SignatureDeclareThrowsException"/>
+    <exclude name="AvoidCatchingGenericException"/>
+  </rule>
+  <!--  *********************  -->
+  <rule ref="rulesets/java/strings.xml">
+    <exclude name="AvoidDuplicateLiterals"/>
+  </rule>
+  <rule ref="rulesets/java/clone.xml"/>
+  <rule ref="rulesets/java/migrating.xml"/>
+  <rule ref="rulesets/java/sunsecure.xml"/>
+  <rule ref="rulesets/java/typeresolution.xml">
+    <!--  Rule already in imports.xml.  -->
+    <exclude name="UnusedImports"/>
+  </rule>
+  <rule ref="rulesets/java/unusedcode.xml"/>
+  <rule ref="rulesets/java/junit.xml">
+    <!--
+     Excluding rule as we have a better rule implememted by ourselves
+    -->
+    <exclude name="JUnitTestsShouldIncludeAssert"/>
+    <!--
+     Excluding this one since we add it with different priority below.
+    -->
+    <exclude name="JUnitAssertionsShouldIncludeMessage"/>
+    <!--
+     Excluding this one since we add it with different priority below.
+    -->
+    <exclude name="TestClassWithoutTestCases"/>
+    <!--  Excluding this one because more the merrier  -->
+    <exclude name="JUnitTestContainsTooManyAsserts"/>
+  </rule>
+  <rule ref="rulesets/java/junit.xml/JUnitAssertionsShouldIncludeMessage">
+    <priority>5</priority>
+  </rule>
+  <rule ref="rulesets/java/junit.xml/TestClassWithoutTestCases">
+    <priority>5</priority>
+  </rule>
+  <rule ref="rulesets/java/logging-jakarta-commons.xml"/>
+  <rule ref="rulesets/java/finalizers.xml"/>
+  <rule ref="rulesets/java/imports.xml">
+    <exclude name="TooManyStaticImports"/>
+    <!--
+     Excluding this one since we add it with different priority below.
+    -->
+    <exclude name="UnusedImports"/>
+  </rule>
+  <rule ref="rulesets/java/imports.xml/UnusedImports">
+    <priority>5</priority>
+  </rule>
+</ruleset>
