@@ -28,9 +28,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "region")
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class Region extends BaseEntitiy{
 
   @Id

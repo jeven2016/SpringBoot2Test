@@ -27,11 +27,18 @@ public class RegionTest {
 
   @Test
   public void create_one_two() {
-    Region region = Region.builder().name("parent").build();
-    Region child1 = Region.builder().name("child1").build();
-    Region child2 = Region.builder().name("child2").build();
+    Region region = new Region();
+    region.setName("parent");
+
+    Region child1 = new Region();
+    child1.setName("child1");
+
+
+    Region child2 = new Region();
+    child2.setName("child1");
 
     region.addChildren(child1);
+    region.addChildren(child2);
     rep.save(region);
 
     List<Region> list = rep.findAll();
